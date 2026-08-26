@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-const REGIONS = ["Qusar", "Q?b?l?", "Quba", "S?ki", "Ismayilli", "Zaqatala", "Qax", "L?nk?ran"];
+const REGIONS = ["Qusar", "Qebele", "Quba", "Seki", "Ismayilli", "Zaqatala", "Qax", "Lenkeran"];
 
 export function HouseForm({ initial }: { initial?: House }) {
   const router = useRouter();
@@ -75,12 +75,12 @@ export function HouseForm({ initial }: { initial?: House }) {
         const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
         const data = await res.json().catch(() => null);
         if (!res.ok || !data?.url) {
-          toast.error(data?.error ?? `"${file.name}" yükl?nm?di`);
+          toast.error(data?.error ?? `"${file.name}" yuklenmedi`);
         } else {
           setImages((imgs) => [...imgs, data.url]);
         }
       } catch {
-        toast.error(`"${file.name}" yükl?nm?di — s?b?k? x?tasi`);
+        toast.error(`"${file.name}" yuklenmedi - sebeke xetasi`);
       } finally {
         setUploading((u) => {
           const next = { ...u };
@@ -101,23 +101,23 @@ export function HouseForm({ initial }: { initial?: House }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url }),
         });
-        toast.success("S?kil yaddasdan da silindi");
+        toast.success("Sekil yaddasdan da silindi");
       } catch {
       }
     }
   };
 
   const validate = (): string | null => {
-    if (!title.trim()) return "Ev adi bos ola bilm?z";
-    if (!region.trim()) return "Region seçin";
+    if (!title.trim()) return "Ev adi bos ola bilmez";
+    if (!region.trim()) return "Region secin";
     const price = Number(dailyPrice);
-    if (!Number.isFinite(price) || price <= 0) return "Düzgün günlük qiym?t daxil edin";
+    if (!Number.isFinite(price) || price <= 0) return "Duzgun gunluk qiymet daxil edin";
     const g = Number(guests);
-    if (!Number.isInteger(g) || g < 1) return "Qonaq sayi düzgün deyil";
+    if (!Number.isInteger(g) || g < 1) return "Qonaq sayi duzgun deyil";
     const la = Number(lat);
     const ln = Number(lng);
-    if (!Number.isFinite(la) || !Number.isFinite(ln)) return "Koordinatlari r?q?ml? daxil edin";
-    if (images.filter((u) => u.trim()).length === 0) return "?n azi 1 s?kil linki ?lav? edin";
+    if (!Number.isFinite(la) || !Number.isFinite(ln)) return "Koordinatlari reqemle daxil edin";
+    if (images.filter((u) => u.trim()).length === 0) return "En azi 1 sekil elave edin";
     return null;
   };
 
@@ -146,19 +146,19 @@ export function HouseForm({ initial }: { initial?: House }) {
     });
     setSaving(false);
     if (res.ok) {
-      toast.success(initial ? "D?yisiklikl?r yadda saxlanildi" : "Yeni ev ?lav? olundu");
+      toast.success(initial ? "DeyisikliklÉ™r yadda saxlanildi" : "Yeni ev elave olundu");
       router.push("/admin");
       router.refresh();
     } else {
       const data = await res.json().catch(() => null);
-      toast.error(data?.error ?? "X?ta bas verdi");
+      toast.error(data?.error ?? "Xeta bas verdi");
     }
   };
 
   return (
     <div className="space-y-8">
       <section className="rounded-3xl border border-line bg-white/80 p-6 shadow-soft">
-        <h2 className="font-display text-base font-semibold text-ink">?sas M?lumatlar</h2>
+        <h2 className="font-display text-base font-semibold text-ink">Esas Melumatlar</h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <Label htmlFor="title">Ev Adi</Label>
@@ -166,16 +166,16 @@ export function HouseForm({ initial }: { initial?: House }) {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="m?s. Sahdag Panorama Lodge"
+              placeholder="mes. Sahdag Panorama Lodge"
             />
           </div>
           <div className="sm:col-span-2">
-            <Label htmlFor="desc">T?svir</Label>
+            <Label htmlFor="desc">Tesvir</Label>
             <Textarea
               id="desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Evin atmosferi, ?trafi v? üstünlükl?ri haqqinda qisa, s?mimi t?svir..."
+              placeholder="Evin atmosferi, etrafi ve ustunlukleri haqqinda qisa, semimi tesvir..."
             />
           </div>
           <div>
@@ -185,7 +185,7 @@ export function HouseForm({ initial }: { initial?: House }) {
               list="region-list"
               value={region}
               onChange={(e) => setRegion(e.target.value)}
-              placeholder="m?s. Qusar"
+              placeholder="mes. Qusar"
             />
             <datalist id="region-list">
               {REGIONS.map((r) => (
@@ -195,7 +195,7 @@ export function HouseForm({ initial }: { initial?: House }) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="price">Günlük Qiym?t (?)</Label>
+              <Label htmlFor="price">Gunluk Qiymet (AZN)</Label>
               <Input
                 id="price"
                 type="number"
@@ -223,7 +223,7 @@ export function HouseForm({ initial }: { initial?: House }) {
       <section className="rounded-3xl border border-line bg-white/80 p-6 shadow-soft">
         <h2 className="font-display text-base font-semibold text-ink">Lokasiya (Lat / Lng)</h2>
         <p className="mt-1 text-xs text-ink-faint">
-          Google Maps-d? ev? sag klikl?yin — koordinatlar avtomatik kopyalanir.
+          Google Maps-de eve sag klikleyin - koordinatlar avtomatik kopyalanir.
         </p>
         <div className="mt-4 grid gap-5 sm:grid-cols-2">
           <div>
@@ -250,7 +250,7 @@ export function HouseForm({ initial }: { initial?: House }) {
       </section>
 
       <section className="rounded-3xl border border-line bg-white/80 p-6 shadow-soft">
-        <h2 className="font-display text-base font-semibold text-ink">Xüsusiyy?tl?r</h2>
+        <h2 className="font-display text-base font-semibold text-ink">Xususiyyetler</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           {FEATURE_PRESETS.map(({ label, icon: Icon }) => {
             const active = features.includes(label);
@@ -307,18 +307,18 @@ export function HouseForm({ initial }: { initial?: House }) {
             value={customFeature}
             onChange={(e) => setCustomFeature(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustomFeature())}
-            placeholder="F?rdi xüsusiyy?t ?lav? et (m?s. Usaq meydançasi)"
+            placeholder="Ferdi xususiyyet elave et (mes. Usaq meydancasi)"
           />
           <Button type="button" variant="secondary" onClick={addCustomFeature} className="shrink-0">
             <Plus className="size-4" />
-            ?lav? et
+            Elave et
           </Button>
         </div>
       </section>
 
       <section className="rounded-3xl border border-line bg-white/80 p-6 shadow-soft">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="font-display text-base font-semibold text-ink">S?kill?r</h2>
+          <h2 className="font-display text-base font-semibold text-ink">Sekiller</h2>
           <Button
             type="button"
             variant="ghost"
@@ -326,11 +326,11 @@ export function HouseForm({ initial }: { initial?: House }) {
             onClick={() => setShowLinkInput((s) => !s)}
           >
             <Link2 className="size-4" />
-            Link ?lav? et
+            Link elave et
           </Button>
         </div>
         <p className="mt-1 text-xs text-ink-faint">
-          Ilk s?kil qalereyada ?sas (böyük) görünür. Oxlarla sirani d?yis? bil?rsiniz.
+          Ilk sekil qalereyada esas (boyuk) gorunur. Oxlarla sirani deyise bilersiniz.
         </p>
 
         <div
@@ -352,9 +352,9 @@ export function HouseForm({ initial }: { initial?: House }) {
         >
           <UploadCloud className="size-7 text-ink-faint" />
           <p className="text-sm font-medium text-ink">
-            S?kill?ri buraya sürüsdürün, ya da klikl?yib seçin
+            Sekilleri buraya suruÅŸdurun, ya da klikleyib secin
           </p>
-          <p className="text-xs text-ink-faint">JPG, PNG, WebP, AVIF, GIF · maks 10 MB</p>
+          <p className="text-xs text-ink-faint">JPG, PNG, WebP, AVIF, GIF - maks 10 MB</p>
           <input
             ref={fileInputRef}
             type="file"
@@ -398,7 +398,7 @@ export function HouseForm({ initial }: { initial?: House }) {
                 }}
               >
                 <ImagePlus className="size-4" />
-                ?lav? et
+                Elave et
               </Button>
             </motion.div>
           )}
@@ -415,7 +415,7 @@ export function HouseForm({ initial }: { initial?: House }) {
                 className="flex items-center gap-2.5 rounded-xl bg-cream/60 px-3 py-2.5"
               >
                 <Loader2 className="size-4 shrink-0 animate-spin text-ember" />
-                <span className="text-sm text-ink-faint">Yükl?nir...</span>
+                <span className="text-sm text-ink-faint">Yuklenir...</span>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -480,7 +480,7 @@ export function HouseForm({ initial }: { initial?: House }) {
         </Button>
         <Button variant="ember" onClick={submit} disabled={saving} className="min-w-44">
           {saving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
-          {saving ? "Yadda saxlanir..." : initial ? "D?yisiklikl?ri Saxla" : "Evi ?lav? Et"}
+          {saving ? "Yadda saxlanir..." : initial ? "Deyisiklikleri Saxla" : "Evi Elave Et"}
         </Button>
       </div>
     </div>
