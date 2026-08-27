@@ -32,7 +32,7 @@ export function Logo({ light = false }: { light?: boolean }) {
           light ? "text-paper" : "text-ink",
         )}
       >
-        A-FRAME<span className="text-ember"> STAYS</span>
+        <span className="text-ember">N&F</span> Cabins
       </span>
     </Link>
   );
