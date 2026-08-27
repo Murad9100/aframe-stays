@@ -93,10 +93,10 @@ export function Footer() {
             </h4>
             <ul className="mt-4 space-y-3 text-sm text-paper/70">
               <li className="flex items-center gap-2.5">
-                <Phone className="size-4 text-ember" /> +994 50 555 07 07
+                <Phone className="size-4 text-ember" /> +994 55 262 22 23
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail className="size-4 text-ember" /> salam@aframe.az
+                <Mail className="size-4 text-ember" /> Fegan1117@icloud.com
               </li>
               <li className="flex items-center gap-2.5">
                 <MapPin className="size-4 text-ember" /> Bakı, Azərbaycan
