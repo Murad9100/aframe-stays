@@ -73,14 +73,20 @@ export function HouseForm({ initial }: { initial?: House }) {
         const fd = new FormData();
         fd.append("file", file);
         const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-        const data = await res.json().catch(() => null);
+        let data: any = null;
+        try {
+          data = await res.json();
+        } catch {
+          data = null;
+        }
         if (!res.ok || !data?.url) {
-          toast.error(data?.error ?? `"${file.name}" yuklenmedi`);
+          const reason = data?.error ?? `HTTP ${res.status} ${res.statusText}`;
+          toast.error(`"${file.name}" yuklenmedi: ${reason}`);
         } else {
           setImages((imgs) => [...imgs, data.url]);
         }
-      } catch {
-        toast.error(`"${file.name}" yuklenmedi - sebeke xetasi`);
+      } catch (e: any) {
+        toast.error(`"${file.name}" yuklenmedi: ${e?.message ?? "sebeke xetasi"}`);
       } finally {
         setUploading((u) => {
           const next = { ...u };
@@ -480,7 +486,7 @@ export function HouseForm({ initial }: { initial?: House }) {
         </Button>
         <Button variant="ember" onClick={submit} disabled={saving} className="min-w-44">
           {saving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
-          {saving ? "Yadda saxlanir..." : initial ? "Deyisiklikleri Saxla" : "Evi Elave Et"}
+          {saving ? "Yadda saxlanir..." : initial ? "Dəyişiklikleri Saxla" : "Evi Elave Et"}
         </Button>
       </div>
     </div>
