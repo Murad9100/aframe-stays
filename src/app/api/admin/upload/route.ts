@@ -14,6 +14,8 @@ const ALLOWED: Record<string, string> = {
 };
 const MAX_BYTES = 10 * 1024 * 1024;
 
+const hasBlob = () => Boolean(process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN);
+
 export async function POST(req: Request) {
   const guard = await requireAdmin();
   if (guard) return guard;
@@ -34,20 +36,33 @@ export async function POST(req: Request) {
   const name = `${randomUUID()}.${ext}`;
   const buf = Buffer.from(await file.arrayBuffer());
 
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const { put } = await import("@vercel/blob");
-    const blob = await put(name, buf, {
-      access: "public",
-      contentType: file.type,
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    });
-    return Response.json({ url: blob.url }, { status: 201 });
+  if (hasBlob()) {
+    try {
+      const { put } = await import("@vercel/blob");
+      const blob = await put(name, buf, {
+        access: "public",
+        contentType: file.type,
+        ...(process.env.BLOB_READ_WRITE_TOKEN ? { token: process.env.BLOB_READ_WRITE_TOKEN } : {}),
+      });
+      return Response.json({ url: blob.url }, { status: 201 });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Blob yuklemesi ugursuz oldu";
+      return Response.json({ error: `Blob xetasi: ${msg}` }, { status: 500 });
+    }
   }
 
-  const dir = path.join(process.cwd(), "uploads");
-  await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(path.join(dir, name), buf);
-  return Response.json({ url: `/uploads/${name}` }, { status: 201 });
+  try {
+    const dir = path.join(process.cwd(), "uploads");
+    await fs.mkdir(dir, { recursive: true });
+    await fs.writeFile(path.join(dir, name), buf);
+    return Response.json({ url: `/uploads/${name}` }, { status: 201 });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "namelum xeta";
+    return Response.json(
+      { error: `Blob qoshulmayib ve lokal yazma mumkun olmadi: ${msg}` },
+      { status: 500 },
+    );
+  }
 }
 
 export async function DELETE(req: Request) {
@@ -59,9 +74,12 @@ export async function DELETE(req: Request) {
     return Response.json({ error: "URL telab olunur" }, { status: 400 });
   }
 
-  if (url.includes("blob.vercel-storage.com") && process.env.BLOB_READ_WRITE_TOKEN) {
+  if (url.includes("blob.vercel-storage.com") && hasBlob()) {
     const { del } = await import("@vercel/blob");
-    await del(url, { token: process.env.BLOB_READ_WRITE_TOKEN }).catch(() => null);
+    await del(
+      url,
+      process.env.BLOB_READ_WRITE_TOKEN ? { token: process.env.BLOB_READ_WRITE_TOKEN } : undefined,
+    ).catch(() => null);
     return Response.json({ ok: true });
   }
 
