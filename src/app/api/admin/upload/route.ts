@@ -25,10 +25,10 @@ export async function POST(req: Request) {
   }
   const ext = ALLOWED[file.type];
   if (!ext) {
-    return Response.json({ error: "Yalniz JPG, PNG, WebP, AVIF, GIF q?bul olunur" }, { status: 400 });
+    return Response.json({ error: "Yalniz JPG, PNG, WebP, AVIF, GIF qebul olunur" }, { status: 400 });
   }
   if (file.size > MAX_BYTES) {
-    return Response.json({ error: "Fayl 10 MB-dan böyük ola bilm?z" }, { status: 400 });
+    return Response.json({ error: "Fayl 10 MB-dan boyuk ola bilmez" }, { status: 400 });
   }
 
   const name = `${randomUUID()}.${ext}`;
@@ -56,7 +56,7 @@ export async function DELETE(req: Request) {
 
   const { url } = await req.json().catch(() => ({ url: "" }));
   if (typeof url !== "string" || !url) {
-    return Response.json({ error: "URL t?l?b olunur" }, { status: 400 });
+    return Response.json({ error: "URL telab olunur" }, { status: 400 });
   }
 
   if (url.includes("blob.vercel-storage.com") && process.env.BLOB_READ_WRITE_TOKEN) {
