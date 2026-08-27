@@ -24,7 +24,7 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Logo({ light = false }: { light?: boolean }) {
   return (
-    <Link href="/" className="group flex items-center gap-2.5" aria-label="A-FRAME STAYS ana səhifə">
+    <Link href="/" className="group flex items-center gap-2.5" aria-label="N&F Cabins ana səhifə">
       <LogoMark />
       <span
         className={cn(
