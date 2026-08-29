@@ -8,11 +8,12 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const houses = await getHouses();
+  const regions = Array.from(new Set(houses.map((h) => h.region).filter(Boolean)));
 
   return (
     <>
-      <Hero houseCount={houses.length} />
-      <MarqueeStrip />
+      <Hero houseCount={houses.length} regionCount={regions.length} regions={regions} />
+      <MarqueeStrip regions={regions} />
       <TrustStrip />
 
       <section id="houses" className="mx-auto max-w-7xl scroll-mt-28 px-5 py-10 sm:px-6">

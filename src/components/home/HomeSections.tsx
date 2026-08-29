@@ -15,10 +15,15 @@ import { WHATSAPP_NUMBER } from "@/lib/utils";
 
 /* ---------- Marquee ---------- */
 
-const MARQUEE_ITEMS = ["QUSAR", "QƏBƏLƏ", "QUBA", "ŞƏKİ", "İSMAYILLI", "ZAQATALA", "LƏNKƏRAN"];
-
-export function MarqueeStrip() {
-  const row = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+export function MarqueeStrip({ regions }: { regions: string[] }) {
+  if (regions.length === 0) return null;
+  const base = regions.map((r) => r.toUpperCase());
+  const minItems = 8;
+  const repeated = Array.from(
+    { length: Math.max(1, Math.ceil(minItems / base.length)) },
+    () => base,
+  ).flat();
+  const row = [...repeated, ...repeated];
   return (
     <div className="overflow-hidden border-y border-line bg-cream/60 py-4">
       <div className="flex w-max animate-marquee items-center gap-10">

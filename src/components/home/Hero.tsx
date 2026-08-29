@@ -10,7 +10,23 @@ const HERO_VIDEO =
 const HERO_POSTER =
   "https://images.pexels.com/videos/35428333/pexels-photo-35428333.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200";
 
-export function Hero({ houseCount }: { houseCount: number }) {
+function buildRegionsPhrase(regions: string[]): string {
+  const clean = regions.filter(Boolean);
+  if (clean.length === 0) return "seçilmiş dağ bölgələrində";
+  if (clean.length === 1) return `${clean[0]}də`;
+  if (clean.length === 2) return `${clean[0]} və ${clean[1]}də`;
+  return `${clean.slice(0, -1).join(", ")} və ${clean[clean.length - 1]}də`;
+}
+
+export function Hero({
+  houseCount,
+  regionCount,
+  regions = [],
+}: {
+  houseCount: number;
+  regionCount: number;
+  regions?: string[];
+}) {
   return (
     <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden">
       <motion.div
@@ -82,7 +98,7 @@ export function Hero({ houseCount }: { houseCount: number }) {
             transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
             className="mt-6 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg"
           >
-            Qusar, Qəbələ və Şəkidə əl ilə seçilmiş premium A-Frame evləri. Tarixləri seçin —
+            {buildRegionsPhrase(regions)} əl ilə seçilmiş premium A-Frame evləri. Tarixləri seçin —
             sifarişinizi saniyələr içində WhatsApp ilə tamamlayın.
           </motion.p>
 
@@ -118,7 +134,7 @@ export function Hero({ houseCount }: { houseCount: number }) {
           >
             {[
               { big: String(houseCount), small: "Premium Ev" },
-              { big: "5+", small: "Region" },
+              { big: String(regionCount), small: "Region" },
               { big: "24/7", small: "Dəstək" },
             ].map((s) => (
               <div
