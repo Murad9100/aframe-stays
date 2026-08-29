@@ -22,25 +22,26 @@ interface TouristContextType {
 const TouristContext = createContext<TouristContextType | null>(null);
 
 export function TouristProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Lang>("az");
-  const [currency, setCurrency] = useState<Currency>("AZN");
+  const [lang, setLangState] = useState<Lang>("az");
+  const [currency, setCurrencyState] = useState<Currency>("AZN");
 
   useEffect(() => {
-    const savedLang = localStorage.getItem("nf_lang") as Lang;
-    const savedCurr = localStorage.getItem("nf_curr") as Currency;
-    if (savedLang) setLang(savedLang);
-    if (savedCurr) setCurrency(savedCurr);
+    const savedLang = localStorage.getItem("nf_lang") as Lang | null;
+    if (savedLang && langToCurrency[savedLang]) {
+      setLangState(savedLang);
+      setCurrencyState(langToCurrency[savedLang]);
+    }
   }, []);
 
-  const updateLang = (l: Lang) => {
-    setLang(l);
+  const setLang = (l: Lang) => {
+    setLangState(l);
     localStorage.setItem("nf_lang", l);
-    const autoCurrency = langToCurrency[l];
-    setCurrency(autoCurrency);
-    localStorage.setItem("nf_curr", autoCurrency);
+    setCurrencyState(langToCurrency[l]);
   };
 
-  const updateCurrency = (c: Currency) => { setCurrency(c); localStorage.setItem("nf_curr", c); };
+  const setCurrency = (c: Currency) => {
+    setCurrencyState(c);
+  };
 
   const t = (key: keyof typeof dictionaries.az, vars?: Record<string, string>) => {
     let text = dictionaries[lang][key] || dictionaries["az"][key];
@@ -56,7 +57,7 @@ export function TouristProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <TouristContext.Provider value={{ lang, setLang: updateLang, currency, setCurrency: updateCurrency, t, formatPrice, currencySymbol: symbols[currency] }}>
+    <TouristContext.Provider value={{ lang, setLang, currency, setCurrency, t, formatPrice, currencySymbol: symbols[currency] }}>
       {children}
     </TouristContext.Provider>
   );

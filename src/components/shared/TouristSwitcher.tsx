@@ -4,16 +4,21 @@ import { useTourist } from "@/context/TouristContext";
 import { ChevronDown } from "lucide-react";
 
 const LANGUAGES = [
-  { code: "az", label: "Azərbaycan", flag: "🇦🇿" },
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "ru", label: "Русский", flag: "🇷🇺" },
+  { code: "az", label: "Azərbaycan", flagCode: "az" },
+  { code: "en", label: "English", flagCode: "gb" },
+  { code: "ru", label: "Русский", flagCode: "ru" },
 ] as const;
 
-const CURRENCIES = [
-  { code: "AZN", symbol: "₼" },
-  { code: "USD", symbol: "$" },
-  { code: "RUB", symbol: "₽" },
-] as const;
+function Flag({ code, className }: { code: string; className?: string }) {
+  return (
+    <img
+      src={`https://flagcdn.com/w40/${code}.png`}
+      alt={code}
+      className={className ?? "h-3.5 w-5 rounded-[2px] object-cover"}
+      loading="lazy"
+    />
+  );
+}
 
 export function TouristSwitcher() {
   const { lang, setLang, currency, setCurrency } = useTourist();
@@ -36,7 +41,7 @@ export function TouristSwitcher() {
         onClick={() => setOpen((v) => !v)}
         className="flex items-center gap-1.5 rounded-full border border-line bg-cream/60 px-3 py-1.5 text-xs font-semibold text-ink shadow-sm backdrop-blur-md transition hover:bg-cream cursor-pointer"
       >
-        <span className="text-base leading-none">{active.flag}</span>
+        <Flag code={active.flagCode} />
         <span className="uppercase tracking-wide">{active.code}</span>
         <span className="text-ink-faint">·</span>
         <span className="text-ember-deep">{currency}</span>
@@ -56,24 +61,23 @@ export function TouristSwitcher() {
                 lang === l.code ? "bg-cream/80 font-semibold text-ember-deep" : "text-ink"
               }`}
             >
-              <span className="text-base leading-none">{l.flag}</span>
+              <Flag code={l.flagCode} />
               {l.label}
             </button>
           ))}
 
           <div className="border-y border-line px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-ink-faint">
-            Valyuta
+            Valyuta (dilə görə avtomatik, əl ilə də dəyişə bilərsiniz)
           </div>
-          {CURRENCIES.map((c) => (
+          {(["AZN", "USD", "RUB"] as const).map((c) => (
             <button
-              key={c.code}
-              onClick={() => { setCurrency(c.code); setOpen(false); }}
+              key={c}
+              onClick={() => { setCurrency(c); setOpen(false); }}
               className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm transition hover:bg-cream cursor-pointer ${
-                currency === c.code ? "bg-cream/80 font-semibold text-ember-deep" : "text-ink"
+                currency === c ? "bg-cream/80 font-semibold text-ember-deep" : "text-ink"
               }`}
             >
-              {c.code}
-              <span className="text-ink-faint">{c.symbol}</span>
+              {c}
             </button>
           ))}
         </div>
