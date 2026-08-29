@@ -32,7 +32,7 @@ export function Footer() {
         className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 select-none font-display text-[22vw] font-800 leading-none text-white/[0.04]"
         style={{ fontWeight: 800 }}
       >
-        A-FRAME
+        N&F CABINS
       </div>
 
       <div className="relative mx-auto max-w-7xl px-5 pb-10 pt-16 sm:px-6">
@@ -41,7 +41,7 @@ export function Footer() {
             <div className="flex items-center gap-2.5">
               <LogoMark className="bg-paper text-ink group-hover:bg-ember group-hover:text-white" />
               <span className="font-display text-lg font-bold tracking-tight">
-                A-FRAME<span className="text-ember"> STAYS</span>
+                <span className="text-ember">N&F</span> Cabins
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/60">
@@ -93,10 +93,10 @@ export function Footer() {
             </h4>
             <ul className="mt-4 space-y-3 text-sm text-paper/70">
               <li className="flex items-center gap-2.5">
-                <Phone className="size-4 text-ember" /> +994 50 555 07 07
+                <Phone className="size-4 text-ember" /> +994 55 262 22 23
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail className="size-4 text-ember" /> salam@aframe.az
+                <Mail className="size-4 text-ember" /> Fegan1117@icloud.com
               </li>
               <li className="flex items-center gap-2.5">
                 <MapPin className="size-4 text-ember" /> Bakı, Azərbaycan
@@ -116,7 +116,7 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-paper/40 sm:flex-row">
-          <span>© 2026 A-FRAME STAYS. Bütün hüquqlar qorunur.</span>
+          <span>© 2026 N&F CABINS STAYS. Bütün hüquqlar qorunur.</span>
           <span>Premium A-Frame Dağ Evləri · Azərbaycan</span>
         </div>
       </div>
