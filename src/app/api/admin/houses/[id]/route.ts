@@ -20,7 +20,11 @@ export async function PUT(req: Request, ctx: Ctx) {
     .update(houses)
     .set({
       title: data.title,
+      titleEn: data.titleEn ?? null,
+      titleRu: data.titleRu ?? null,
       description: data.description,
+      descriptionEn: data.descriptionEn ?? null,
+      descriptionRu: data.descriptionRu ?? null,
       region: data.region,
       dailyPrice: data.dailyPrice,
       guests: data.guests,

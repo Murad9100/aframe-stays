@@ -28,8 +28,15 @@ const REGIONS = ["Qusar", "Qebele", "Quba", "Seki", "Ismayilli", "Zaqatala", "Qa
 
 export function HouseForm({ initial }: { initial?: House }) {
   const router = useRouter();
+  const [langTab, setLangTab] = useState<"az" | "en" | "ru">("az");
+
   const [title, setTitle] = useState(initial?.title ?? "");
   const [description, setDescription] = useState(initial?.description ?? "");
+  const [titleEn, setTitleEn] = useState(initial?.titleEn ?? "");
+  const [descriptionEn, setDescriptionEn] = useState(initial?.descriptionEn ?? "");
+  const [titleRu, setTitleRu] = useState(initial?.titleRu ?? "");
+  const [descriptionRu, setDescriptionRu] = useState(initial?.descriptionRu ?? "");
+
   const [region, setRegion] = useState(initial?.region ?? "");
   const [dailyPrice, setDailyPrice] = useState(initial ? String(initial.dailyPrice) : "");
   const [guests, setGuests] = useState(initial ? String(initial.guests) : "4");
@@ -136,7 +143,11 @@ export function HouseForm({ initial }: { initial?: House }) {
     setSaving(true);
     const payload = {
       title: title.trim(),
+      titleEn: titleEn.trim() || null,
+      titleRu: titleRu.trim() || null,
       description: description.trim(),
+      descriptionEn: descriptionEn.trim() || null,
+      descriptionRu: descriptionRu.trim() || null,
       region: region.trim(),
       dailyPrice: Math.round(Number(dailyPrice)),
       guests: Number(guests),
@@ -164,26 +175,95 @@ export function HouseForm({ initial }: { initial?: House }) {
   return (
     <div className="space-y-8">
       <section className="rounded-3xl border border-line bg-white/80 p-6 shadow-soft">
-        <h2 className="font-display text-base font-semibold text-ink">Esas Melumatlar</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-base font-semibold text-ink">Esas Melumatlar</h2>
+          <div className="flex gap-1 rounded-full border border-line bg-cream/50 p-1">
+            {(["az", "en", "ru"] as const).map((l) => (
+              <button
+                key={l}
+                type="button"
+                onClick={() => setLangTab(l)}
+                className={cn(
+                  "rounded-full px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wide transition cursor-pointer",
+                  langTab === l ? "bg-ember text-white" : "text-ink-faint hover:text-ink",
+                )}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
-          <div className="sm:col-span-2">
-            <Label htmlFor="title">Ev Adi</Label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="mes. Sahdag Panorama Lodge"
-            />
-          </div>
-          <div className="sm:col-span-2">
-            <Label htmlFor="desc">Tesvir</Label>
-            <Textarea
-              id="desc"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Evin atmosferi, etrafi ve ustunlukleri haqqinda qisa, semimi tesvir..."
-            />
-          </div>
+          {langTab === "az" && (
+            <>
+              <div className="sm:col-span-2">
+                <Label htmlFor="title">Ev Adi (AZ) *</Label>
+                <Input
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="mes. Sahdag Panorama Lodge"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="desc">Tesvir (AZ) *</Label>
+                <Textarea
+                  id="desc"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Evin atmosferi, etrafi ve ustunlukleri haqqinda qisa, semimi tesvir..."
+                />
+              </div>
+            </>
+          )}
+
+          {langTab === "en" && (
+            <>
+              <div className="sm:col-span-2">
+                <Label htmlFor="titleEn">House Name (EN) — optional, falls back to AZ if empty</Label>
+                <Input
+                  id="titleEn"
+                  value={titleEn}
+                  onChange={(e) => setTitleEn(e.target.value)}
+                  placeholder="e.g. Shahdag Panorama Lodge"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="descEn">Description (EN) — optional, falls back to AZ if empty</Label>
+                <Textarea
+                  id="descEn"
+                  value={descriptionEn}
+                  onChange={(e) => setDescriptionEn(e.target.value)}
+                  placeholder="English translation of the description..."
+                />
+              </div>
+            </>
+          )}
+
+          {langTab === "ru" && (
+            <>
+              <div className="sm:col-span-2">
+                <Label htmlFor="titleRu">Название (RU) — необязательно, иначе показывается AZ</Label>
+                <Input
+                  id="titleRu"
+                  value={titleRu}
+                  onChange={(e) => setTitleRu(e.target.value)}
+                  placeholder="напр. Шахдаг Панорама Лодж"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="descRu">Описание (RU) — необязательно, иначе показывается AZ</Label>
+                <Textarea
+                  id="descRu"
+                  value={descriptionRu}
+                  onChange={(e) => setDescriptionRu(e.target.value)}
+                  placeholder="Русский перевод описания..."
+                />
+              </div>
+            </>
+          )}
+
           <div>
             <Label htmlFor="region">Region</Label>
             <Input
@@ -486,7 +566,7 @@ export function HouseForm({ initial }: { initial?: House }) {
         </Button>
         <Button variant="ember" onClick={submit} disabled={saving} className="min-w-44">
           {saving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
-          {saving ? "Yadda saxlanir..." : initial ? "Dəyişiklikleri Saxla" : "Evi Elave Et"}
+          {saving ? "Yadda saxlanir..." : initial ? "Deyisiklikleri Saxla" : "Evi Elave Et"}
         </Button>
       </div>
     </div>

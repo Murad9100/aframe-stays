@@ -69,3 +69,23 @@ export function isValidDateKey(key: string): boolean {
 export function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n));
 }
+
+export type HouseLang = "az" | "en" | "ru";
+
+export function localizedTitle(
+  house: { title: string; titleEn?: string | null; titleRu?: string | null },
+  lang: HouseLang,
+): string {
+  if (lang === "en" && house.titleEn) return house.titleEn;
+  if (lang === "ru" && house.titleRu) return house.titleRu;
+  return house.title;
+}
+
+export function localizedDescription(
+  house: { description: string; descriptionEn?: string | null; descriptionRu?: string | null },
+  lang: HouseLang,
+): string {
+  if (lang === "en" && house.descriptionEn) return house.descriptionEn;
+  if (lang === "ru" && house.descriptionRu) return house.descriptionRu;
+  return house.description;
+}

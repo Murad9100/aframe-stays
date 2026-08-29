@@ -11,6 +11,10 @@ export function parseHouseInput(body: unknown): { data?: HouseInput; error?: str
   const b = body as Record<string, unknown>;
 
   const str = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
+  const optStr = (v: unknown): string | null => {
+    const s = str(v);
+    return s ? s : null;
+  };
   const num = (v: unknown): number => (typeof v === "number" ? v : Number(v));
   const strArr = (v: unknown): string[] =>
     Array.isArray(v)
@@ -18,7 +22,11 @@ export function parseHouseInput(body: unknown): { data?: HouseInput; error?: str
       : [];
 
   const title = str(b.title);
+  const titleEn = optStr(b.titleEn);
+  const titleRu = optStr(b.titleRu);
   const description = str(b.description);
+  const descriptionEn = optStr(b.descriptionEn);
+  const descriptionRu = optStr(b.descriptionRu);
   const region = str(b.region);
   const dailyPrice = Math.round(num(b.dailyPrice));
   const guests = Math.round(num(b.guests));
@@ -28,6 +36,8 @@ export function parseHouseInput(body: unknown): { data?: HouseInput; error?: str
   const images = strArr(b.images).slice(0, 20);
 
   if (!title || title.length > 120) return { error: "Ev adı düzgün deyil" };
+  if (titleEn && titleEn.length > 120) return { error: "İngiliscə ev adı çox uzundur" };
+  if (titleRu && titleRu.length > 120) return { error: "Rusca ev adı çox uzundur" };
   if (!region) return { error: "Region boş ola bilməz" };
   if (!Number.isFinite(dailyPrice) || dailyPrice <= 0 || dailyPrice > 100000)
     return { error: "Günlük qiymət düzgün deyil" };
@@ -40,6 +50,20 @@ export function parseHouseInput(body: unknown): { data?: HouseInput; error?: str
     return { error: "Şəkil linkləri http/https ilə başlamalıdır" };
 
   return {
-    data: { title, description, region, dailyPrice, guests, lat, lng, features, images },
+    data: {
+      title,
+      titleEn,
+      titleRu,
+      description,
+      descriptionEn,
+      descriptionRu,
+      region,
+      dailyPrice,
+      guests,
+      lat,
+      lng,
+      features,
+      images,
+    },
   };
 }

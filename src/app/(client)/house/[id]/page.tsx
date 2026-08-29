@@ -3,14 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, MapPin, Users } from "lucide-react";
 import { getBlockedKeys, getHouseById } from "@/lib/db";
-import { formatPrice } from "@/lib/utils";
 import { ImageGallery } from "@/components/house/ImageGallery";
 import { FeaturesList } from "@/components/house/FeaturesList";
+import { LocalizedTitle, LocalizedDescription } from "@/components/house/LocalizedHouseText";
+import { PriceBadge } from "@/components/house/PriceBadge";
 import { BookingSection } from "@/components/booking/BookingSection";
 import { MapCard } from "@/components/map/MapCard";
 import { CopyLinkButton } from "@/components/shared/CopyLinkButton";
 import { Reveal } from "@/components/shared/Reveal";
-import { Badge } from "@/components/ui/badge";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +47,6 @@ export default async function HousePage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-32 pt-24 sm:px-6 lg:pb-16">
-      {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <Link
           href="/#houses"
@@ -64,7 +63,7 @@ export default async function HousePage({ params }: PageProps) {
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-            {house.title}
+            <LocalizedTitle house={house} />
           </h1>
           <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-ink-faint">
             <span className="flex items-center gap-1.5">
@@ -77,25 +76,21 @@ export default async function HousePage({ params }: PageProps) {
             </span>
           </div>
         </div>
-        <Badge variant="ember" className="px-4 py-2 text-sm">
-          {formatPrice(house.dailyPrice)} / gecə
-        </Badge>
+        <PriceBadge dailyPrice={house.dailyPrice} />
       </div>
 
-      {/* Bento gallery */}
       <Reveal y={20}>
         <div className="relative">
           <ImageGallery images={house.images} title={house.title} />
         </div>
       </Reveal>
 
-      {/* Content */}
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_400px] lg:gap-12">
         <div className="min-w-0 space-y-12">
           <Reveal>
             <section>
               <SectionTitle>Ev Haqqında</SectionTitle>
-              <p className="whitespace-pre-line leading-[1.9] text-ink-soft">{house.description}</p>
+              <LocalizedDescription house={house} />
             </section>
           </Reveal>
 
@@ -112,7 +107,7 @@ export default async function HousePage({ params }: PageProps) {
             <section>
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <SectionTitle>Haradadır?</SectionTitle>
-                <a
+                
                   href={googleMapsUrl}
                   target="_blank"
                   rel="noreferrer"

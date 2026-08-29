@@ -10,7 +10,11 @@ export function serializeHouse(row: HouseRow): House {
   return {
     id: row.id,
     title: row.title,
+    titleEn: row.titleEn,
+    titleRu: row.titleRu,
     description: row.description,
+    descriptionEn: row.descriptionEn,
+    descriptionRu: row.descriptionRu,
     region: row.region,
     dailyPrice: row.dailyPrice,
     guests: row.guests,
@@ -41,7 +45,6 @@ export const getHouseById = cache(async (id: string): Promise<House | null> => {
   return rows[0] ? serializeHouse(rows[0]) : null;
 });
 
-/** Tarix aralığını fərdi günlərə açır (yyyy-MM-dd) */
 export function expandRange(startKey: string, endKey: string): string[] {
   try {
     return eachDayOfInterval({ start: parseISO(startKey), end: parseISO(endKey) }).map(toDateKey);
@@ -67,7 +70,6 @@ export async function getBlockedKeys(houseId: string): Promise<string[]> {
   return [...set].sort();
 }
 
-/** Dashboard üçün: hər ev üzrə qarşıdakı bloklanmış gün sayı */
 export async function getUpcomingBlockedSummary(): Promise<Record<string, number>> {
   const today = toDateKey(new Date());
   const rows = await db

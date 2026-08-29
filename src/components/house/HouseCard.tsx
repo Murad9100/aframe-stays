@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, MapPin, Users } from "lucide-react";
 import type { House } from "@/types";
+import { localizedTitle } from "@/lib/utils";
 import { useTourist } from "@/context/TouristContext";
 import { Badge } from "@/components/ui/badge";
 
@@ -15,16 +16,18 @@ const imgVariants = {
 };
 
 export function HouseCard({ house }: { house: House }) {
+  const { formatPrice, lang } = useTourist();
   const [index, setIndex] = useState(0);
   const [dir, setDir] = useState(1);
   const images = house.images;
-  const { formatPrice } = useTourist();
 
   const go = (next: number) => {
     if (images.length < 2) return;
     setDir(next > index ? 1 : -1);
     setIndex(((next % images.length) + images.length) % images.length);
   };
+
+  const title = localizedTitle(house, lang);
 
   return (
     <Link href={`/house/${house.id}`} className="group block focus:outline-none">
@@ -34,7 +37,7 @@ export function HouseCard({ house }: { house: House }) {
             <motion.img
               key={index}
               src={images[index]}
-              alt={house.title}
+              alt={title}
               custom={dir}
               variants={imgVariants}
               initial="enter"
@@ -99,7 +102,7 @@ export function HouseCard({ house }: { house: House }) {
         <div className="px-1.5 pt-4">
           <div className="flex items-start justify-between gap-3">
             <h3 className="font-display text-[17px] font-semibold leading-snug text-ink transition-colors group-hover:text-ember">
-              {house.title}
+              {title}
             </h3>
             <p className="shrink-0 text-right">
               <span className="font-display text-[17px] font-bold text-ink">

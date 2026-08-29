@@ -14,7 +14,11 @@ import {
 export const houses = pgTable("houses", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
+  titleEn: text("title_en"),
+  titleRu: text("title_ru"),
   description: text("description").notNull().default(""),
+  descriptionEn: text("description_en"),
+  descriptionRu: text("description_ru"),
   region: text("region").notNull().default(""),
   dailyPrice: integer("daily_price").notNull().default(0),
   guests: integer("guests").notNull().default(4),
