@@ -1,6 +1,6 @@
-import { TouristSwitcher } from "@/components/shared/TouristSwitcher";
-"use client";
+"use client;
 
+import { TouristSwitcher } from "@/components/shared/TouristSwitcher";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
