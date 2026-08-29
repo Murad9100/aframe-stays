@@ -1,3 +1,4 @@
+import { TouristProvider } from "@/context/TouristContext";
 import type { Metadata, Viewport } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="az" className={`${inter.variable} ${poppins.variable}`}>
       <body className="font-sans bg-paper text-ink min-h-dvh">
-        {children}
+        <TouristProvider>{children}</TouristProvider>
         <Toaster />
       </body>
     </html>

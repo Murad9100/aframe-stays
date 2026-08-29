@@ -1,3 +1,4 @@
+import { TouristSwitcher } from "@/components/shared/TouristSwitcher";
 "use client";
 
 import Link from "next/link";
