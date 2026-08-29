@@ -107,8 +107,7 @@ export default async function HousePage({ params }: PageProps) {
             <section>
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <SectionTitle>Haradadır?</SectionTitle>
-                
-                  href={googleMapsUrl}
+                <a href={googleMapsUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-1.5 rounded-full border border-line bg-white/70 px-4 py-2 text-xs font-semibold text-ink transition hover:bg-cream"
