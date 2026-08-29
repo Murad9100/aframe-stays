@@ -167,3 +167,14 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+/* --- N&F Brand Colors --- */
+@layer base {
+  :root {
+    --ember: 17 79% 54%;
+    --ember-deep: 17 85% 45%;
+    --ember-soft: 17 75% 65%;
+    --primary: 17 79% 54%;
+    --ring: 17 79% 54%;
+  }
+}
