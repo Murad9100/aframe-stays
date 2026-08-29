@@ -55,6 +55,7 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <TouristSwitcher />
             <Button variant="ember" size="sm" className="hidden sm:inline-flex" onClick={() => { window.location.href = "/#houses"; }}>
               <CalendarHeart className="size-4" />
               İndi Bron Et
