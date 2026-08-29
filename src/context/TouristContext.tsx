@@ -5,8 +5,9 @@ import { dictionaries } from "@/lib/dictionaries";
 type Lang = "az" | "en" | "ru";
 type Currency = "AZN" | "USD" | "RUB";
 
-const rates = { AZN: 1, USD: 1.7, RUB: 0.02 }; 
+const rates = { AZN: 1, USD: 1.7, RUB: 0.02 };
 const symbols = { AZN: "₼", USD: "$", RUB: "₽" };
+const langToCurrency: Record<Lang, Currency> = { az: "AZN", en: "USD", ru: "RUB" };
 
 interface TouristContextType {
   lang: Lang;
@@ -31,7 +32,14 @@ export function TouristProvider({ children }: { children: React.ReactNode }) {
     if (savedCurr) setCurrency(savedCurr);
   }, []);
 
-  const updateLang = (l: Lang) => { setLang(l); localStorage.setItem("nf_lang", l); };
+  const updateLang = (l: Lang) => {
+    setLang(l);
+    localStorage.setItem("nf_lang", l);
+    const autoCurrency = langToCurrency[l];
+    setCurrency(autoCurrency);
+    localStorage.setItem("nf_curr", autoCurrency);
+  };
+
   const updateCurrency = (c: Currency) => { setCurrency(c); localStorage.setItem("nf_curr", c); };
 
   const t = (key: keyof typeof dictionaries.az, vars?: Record<string, string>) => {
@@ -43,8 +51,8 @@ export function TouristProvider({ children }: { children: React.ReactNode }) {
   };
 
   const formatPrice = (azn: number) => {
-    const converted = currency === 'RUB' ? azn / rates.RUB : azn / rates[currency];
-    return `${symbols[currency]} ${converted.toFixed(currency === "AZN" || currency === "RUB" ? 0 : 2)}`;
+    const converted = azn / rates[currency];
+    return `${symbols[currency]} ${converted.toFixed(currency === "USD" ? 2 : 0)}`;
   };
 
   return (
