@@ -55,9 +55,9 @@ export default async function HousePage({ params }: PageProps) {
           <span className="grid size-8 place-items-center rounded-full border border-line bg-white/70">
             <ArrowLeft className="size-4" />
           </span>
-          Bütün evlər
+          BÃ¼tÃ¼n evlÉ™r
         </Link>
-        <CopyLinkButton path={`/house/${house.id}`} label="Paylaş" />
+        <CopyLinkButton path={`/house/${house.id}`} label="PaylaÅŸ" />
       </div>
 
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
@@ -68,11 +68,11 @@ export default async function HousePage({ params }: PageProps) {
           <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-ink-faint">
             <span className="flex items-center gap-1.5">
               <MapPin className="size-4 text-ember" />
-              {house.region}, Azərbaycan
+              {house.region}, AzÉ™rbaycan
             </span>
             <span className="flex items-center gap-1.5">
               <Users className="size-4 text-ember" />
-              {house.guests} qonağa qədər
+              {house.guests} qonaÄŸa qÉ™dÉ™r
             </span>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default async function HousePage({ params }: PageProps) {
         <div className="min-w-0 space-y-12">
           <Reveal>
             <section>
-              <SectionTitle>Ev Haqqında</SectionTitle>
+              <SectionTitle>Ev HaqqÄ±nda</SectionTitle>
               <LocalizedDescription house={house} />
             </section>
           </Reveal>
@@ -97,7 +97,7 @@ export default async function HousePage({ params }: PageProps) {
           {house.features.length > 0 && (
             <Reveal>
               <section>
-                <SectionTitle>Xüsusiyyətlər</SectionTitle>
+                <SectionTitle>XÃ¼susiyyÉ™tlÉ™r</SectionTitle>
                 <FeaturesList features={house.features} />
               </section>
             </Reveal>
@@ -106,14 +106,14 @@ export default async function HousePage({ params }: PageProps) {
           <Reveal>
             <section>
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                <SectionTitle>Haradadır?</SectionTitle>
+                <SectionTitle>HaradadÄ±r?</SectionTitle>
                 
-                  href={googleMapsUrl}
+                <a`n                  href={googleMapsUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-1.5 rounded-full border border-line bg-white/70 px-4 py-2 text-xs font-semibold text-ink transition hover:bg-cream"
                 >
-                  Google Maps-də aç
+                  Google Maps-dÉ™ aÃ§
                   <ExternalLink className="size-3.5" />
                 </a>
               </div>
@@ -126,7 +126,7 @@ export default async function HousePage({ params }: PageProps) {
                 />
               </div>
               <p className="mt-3 text-xs leading-relaxed text-ink-faint">
-                Dəqiq ünvan rezervasiya təsdiqləndikdən sonra WhatsApp vasitəsilə paylaşılır.
+                DÉ™qiq Ã¼nvan rezervasiya tÉ™sdiqlÉ™ndikdÉ™n sonra WhatsApp vasitÉ™silÉ™ paylaÅŸÄ±lÄ±r.
               </p>
             </section>
           </Reveal>
