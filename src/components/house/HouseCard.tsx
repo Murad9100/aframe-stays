@@ -5,7 +5,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, MapPin, Users } from "lucide-react";
 import type { House } from "@/types";
-import { formatPrice } from "@/lib/utils";
+import { useTourist } from "@/context/TouristContext";
 import { Badge } from "@/components/ui/badge";
 
 const imgVariants = {
@@ -18,6 +18,7 @@ export function HouseCard({ house }: { house: House }) {
   const [index, setIndex] = useState(0);
   const [dir, setDir] = useState(1);
   const images = house.images;
+  const { formatPrice } = useTourist();
 
   const go = (next: number) => {
     if (images.length < 2) return;

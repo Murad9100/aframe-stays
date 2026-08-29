@@ -7,15 +7,16 @@ import { toast } from "sonner";
 import type { House } from "@/types";
 import {
   buildWhatsAppUrl,
-  formatPrice,
   formatShortAz,
   nightsBetween,
 } from "@/lib/utils";
+import { useTourist } from "@/context/TouristContext";
 import { BookingCalendar } from "@/components/booking/BookingCalendar";
 import { WhatsAppButton } from "@/components/booking/WhatsAppButton";
 import { Button } from "@/components/ui/button";
 
 export function BookingSection({ house, blockedKeys }: { house: House; blockedKeys: string[] }) {
+  const { formatPrice } = useTourist();
   const [start, setStart] = useState<string | null>(null);
   const [end, setEnd] = useState<string | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
