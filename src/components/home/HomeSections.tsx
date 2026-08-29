@@ -105,9 +105,9 @@ export function TrustStrip() {
 /* ---------- Editorial ---------- */
 
 const EDITORIAL_POINTS = [
-  "Hər ev komandamız tərəfindən baxılıb təsdiqlənib",
+  "Qusarda — Şahdağ Dağ Kurortuna avtomobillə cəmi 15-20 dəqiqə məsafədə",
+  "Bakıdan cəmi ~180 km (təxminən 2 saat) — bir günlük qaçış üçün əlverişli",
   "İsti kamin, tam mətbəx və dağ mənzərəsi standartdır",
-  "Giriş-çıxış tam təmassız — açar kodu WhatsApp-da",
 ];
 
 export function Editorial() {
@@ -127,8 +127,8 @@ export function Editorial() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-5 max-w-md leading-relaxed text-ink-soft">
-              Üçbucaqlı memarlıq yalnız gözəl deyil — qar ağırlığını daşıyır, istiliyi saxlayır və
-              panoramik pəncərəsi ilə meşəni birbaşa otağınıza dəvət edir.
+              Qusardakı evimiz avtomobillə cəmi 15-20 dəqiqədə Şahdağ Dağ Kurortuna çatdırır —
+              dağ təbiətinin sükunəti ilə Bakıya yalnız 2 saatlıq yaxınlığı özündə birləşdirir.
             </p>
           </Reveal>
           <Reveal delay={0.18}>
@@ -166,8 +166,8 @@ export function Editorial() {
             className="relative z-10 overflow-hidden rounded-[28px] shadow-lift"
           >
             <img
-              src="/images/aframe-dusk.jpg"
-              alt="Alacakaranlıqda A-Frame evi"
+              src="https://images.pexels.com/photos/2324562/pexels-photo-2324562.jpeg?auto=compress&cs=tinysrgb&h=800&fit=crop&w=800"
+              alt="Şahdağ dağ mənzərəsi"
               className="aspect-[4/5] w-full object-cover sm:aspect-[5/5]"
               loading="lazy"
             />
